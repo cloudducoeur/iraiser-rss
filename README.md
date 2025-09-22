@@ -1,6 +1,6 @@
 # iRaiser RSS Webservice
 
-Micro-service utilisé pour transformé les informations de l'API iRaiser en flux RSS. Microservice utilisé durant l'évènement Radio Restos.
+Microservice utilisé pour transformé les informations de l'API iRaiser en flux RSS.
 
 ```bash
 # Build
