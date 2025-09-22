@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"encoding/xml"
+	"flag"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -122,6 +124,10 @@ func rssHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	listen := flag.String("listen", "", "IP address to listen on")
+	port := flag.Int("port", 9191, "Port to listen on")
+	flag.Parse()
+
 	go func() {
 		for {
 			fetchData()
@@ -129,7 +135,13 @@ func main() {
 		}
 	}()
 
+	listenAddr := fmt.Sprintf("%s:%d", *listen, *port)
+	displayHost := *listen
+	if displayHost == "" {
+		displayHost = "localhost"
+	}
+
 	http.HandleFunc("/rss", rssHandler)
-	log.Println("[INFO] iRaiser RSS feed available on http://localhost:9191/rss")
-	log.Fatal(http.ListenAndServe(":9191", nil))
+	log.Printf("[INFO] iRaiser RSS feed available on http://%s:%d/rss", displayHost, *port)
+	log.Fatal(http.ListenAndServe(listenAddr, nil))
 }
